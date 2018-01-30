@@ -1,0 +1,15 @@
+
+.main {
+    text-align: center;
+    background-color: green;
+}
+
+li a {
+    color: green;
+}
+
+.map_canvas {
+    width: 600px;
+    height: 400px;
+    margin: auto;
+}
