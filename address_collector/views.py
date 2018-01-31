@@ -38,7 +38,7 @@ def addresses(request):
             row = copy.copy(serializer.data)
             row["tableid"] = settings.GOOGLE_FUSION_TABLE_ID
             sql_string = "INSERT INTO {0} (DatabaseID, Address, Latitude, Longitude, CreatedOn, UpdatedOn) VALUES({1}, '{2}', {3}, {4}, '{5}', '{6}')".format(
-                row["tableid"], row["id"], row["address"], row["longitude"], row["latitude"],
+                row["tableid"], row["id"], row["address"], row["latitude"], row["longitude"],
                 row["created_on"], row["updated_on"])
 
             perform_query(sql_string)
