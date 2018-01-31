@@ -129,8 +129,6 @@ GOOGLE_FUSION_TABLE_ID = ''
 
 GOOGLE_FUSION_AUTHORIZATION_CODE = ''
 
-GOOGLE_CLIENT_ID = ''
-
 GOOGLE_SERVICE_ACCOUNT = {
     "type": "service_account",
     "project_id": "",

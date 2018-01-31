@@ -55,5 +55,5 @@ def addresses(request):
         rows = perform_query(sql_string)["rows"]
         logger.info("Total Addresses: {0}. Deleted From FusionTable: {1}".format(len(list(ids)), rows[0]))
         Address.objects.all().delete()
-        return Response([], status=status.HTTP_201_CREATED)
+        return Response([], status=status.HTTP_205_RESET_CONTENT)
     return Response(status=status.HTTP_404_NOT_FOUND)

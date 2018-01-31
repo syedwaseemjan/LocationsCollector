@@ -30,7 +30,7 @@ def fusion_service():
 
 def perform_query(sql_string):
     '''
-    Util method to get perform actuall query
+    Util method to perform actual query
     sql_string: SQL query string
     '''
     logger.info("Fusion SQL:{}".format(sql_string))
