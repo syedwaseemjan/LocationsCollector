@@ -48,6 +48,82 @@ The following assumes you have all of the recommended tools listed above install
 
     Visit http://127.0.0.1:8000
 
-## Fusion Table:
+## Fusion Table
 
-https://fusiontables.google.com/data?docid=1wHekeIi0hlM6E2PcsaVzBEx5BpY3JyThL554ZKGz#rows:id=1
+    https://fusiontables.google.com/data?docid=1wHekeIi0hlM6E2PcsaVzBEx5BpY3JyThL554ZKGz#rows:id=1
+
+## API Endpoints
+----
+
+### Add Address
+  Adds address information to DB and fusion table.
+
+* **URL**
+
+  /api/v1/addresses/
+
+* **Method:**
+
+  `POST`
+
+* **Data Params**
+
+    {
+        "address": "220KV Grid Station NTDCL Nishatabad Faisalabad, Nishatabad Bridge, Faisalabad, Pakistan",
+        "latitude": "31.449899868379656",
+        "longitude": "73.1195068359375"
+    }
+
+* **Success Response:**
+
+  * **Code:** 201 <br />
+    **Content:** `{
+        "address": "220KV Grid Station NTDCL Nishatabad Faisalabad, Nishatabad Bridge, Faisalabad, Pakistan",
+        "latitude": "31.449899868379656",
+        "longitude": "73.1195068359375"
+    }`
+ 
+* **Error Response:**
+
+  * **Code:** 400 BAD Request <br />
+
+  OR
+
+  * **Code:** 403 Forbidden <br />
+    **Content:** `NBT does not have write permissions to the provided table. Please add your service email address to fusion table access list.`
+
+### Get All Addresses
+  Returns json data for all addresses.
+
+* **URL**
+
+  /api/v1/addresses/
+
+* **Method:**
+
+  `GET`
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** `[{
+        "address": "220KV Grid Station NTDCL Nishatabad Faisalabad, Nishatabad Bridge, Faisalabad, Pakistan",
+        "latitude": "31.449899868379656",
+        "longitude": "73.1195068359375"
+    }]`
+
+### Delete All Addresses
+  Deletes all addresses inside DB and Fusion Table.
+
+* **URL**
+
+  /api/v1/addresses/
+
+* **Method:**
+
+  `DELETE`
+
+* **Success Response:**
+
+  * **Code:** 205 <br />
+    **Content:** `[]`
