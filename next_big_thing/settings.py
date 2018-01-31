@@ -121,29 +121,25 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-GOOGLE_MAPS_KEY = 'AIzaSyAMfnLSNDlr0_-OrzExXx_S3cJR-coN6zM'
+GOOGLE_MAPS_KEY = ''
 
-GOOGLE_FUSION_KEY = 'AIzaSyA_sErUMKJbfVjyLOO3YNM2mwPFAOLv_tU'
+GOOGLE_FUSION_KEY = ''
 
-GOOGLE_FUSION_TABLE_ID = '1wHekeIi0hlM6E2PcsaVzBEx5BpY3JyThL554ZKGz'
+GOOGLE_FUSION_TABLE_ID = ''
 
-GOOGLE_FUSION_AUTHORIZATION_CODE = '4/w05rQt77Gg9f_fycnSBWrELVLug0ERRxQGgt2VRy__4#'
-
-#GOOGLE_CLIENT_ID = '270826958403-dhh8db1vgaq44n1kfmc8kvvs930qmo9t.apps.googleusercontent.com'
-
-GOOGLE_CLIENT_ID = '102217606226429154939'
+GOOGLE_FUSION_AUTHORIZATION_CODE = ''
 
 GOOGLE_SERVICE_ACCOUNT = {
     "type": "service_account",
-    "project_id": "nbtassignment-1517088566054",
-    "private_key_id": "07856165b58642c2efbcefeeeeba91ec863bb673",
-    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDFLytm40mkuLPt\nQNJZzJzSYYHRHDgZcQfeACjtx8KDhFFfeT2PYo9vseit4u6OyKZZFoDN6Soqqj7l\nbatDIwCbQJlIF2723gR3gl9ZWjY5FT/StH+DncYDswhR/g7+BkrUI3skHfdR7LlG\nkUcLxQ3cNOAmeummQtK4uSIqsg8860e2QnMoh4VFVQ+BqARuwPHa1+6vTbIk0T3f\nLUGOt/OGDHI11mxZoCgjBmVyIs8TCTtDORjctq8hT4zwdugqM/OstwAvHSXzz+Ve\nyqHUMU/Af9C8M9IWSryKeijXmieVQuOD3u7n8Yh+v84opg7UscM3/TT7+nMmOzQZ\nIuE47/uhAgMBAAECggEAAQ430jOHoK+E5w2kXeruA4JLDm6RaovNSvqz0/mOe5gZ\n+FqDrWCVODfZADGHgDb+hXC93lxP/i3FAk5Xg6abnFdD80NQnXT8rdcY0qDrlhfR\nJQ7miFDk1rOGaQ23lHm2gCBzUfMdtEhytmVJom1Rf8sYqudcH+SpVBzCEONEiZ1K\nK0Pjxl0WMW3u9A4ICckNn3F6hpSr8p1k1KuInmtjtxpeP4gU0aNJD5QbY1dJpfF3\nWqHEY+Rw3dNSKrPehvNYT1u2jIh8bYObs9LwjKXiuNLHYYa+ilkmJKTM+LKFYzDp\nxlv2IQO+vDTkwKX4NiGpIrNZL7X8An09DnVgJ3dg8QKBgQDvRfUEY0pWbQl3beQ7\nLOonbJGMxG2OcZUay+vLObQH+AhdkBzlnREAt6CRKRDYdR0UjvW4V8XyGZkmX4L+\nq9vD/zsZSVtLeLMvjsKNiIkjhHgQK1fOQMDT2LmsO2EIhkoLas6cDfLpz//uAHPC\nzT3dGL8TilDlJ9kHtwgj+SJQ2wKBgQDS9/xnzbXSskILCW5ii2Mn0KBJ1iu6zIaK\n/bMLJD9QlRSblqHreFHHEW9XAZSW8SekUIw0Cm3d4y0MfngUa6MSD9l1ZdxHxA6a\nEZSZJXr2D9bXWb07hnD/bHhlti0gYnRypBK27OMowxvkWr/Vp/8qMZrB+vAnfQsc\ndv5kNgOgMwKBgQCeJSrQf5++h8rd+PAEfKc273c0BxAyObhHQcjTRYxMSA+fZ4Tx\n7mIyiyvBRdcweheCYwrdkIXwgiLLTg2SrZxPav5wtB93PouQP1cvnLKnmwKQDVW3\nqOzKGFCAGa8Ep12BNlLgqgeHqkaJ1BqvAmCFJboE/EKDc1bq1nq27A9WSQKBgB8P\nleDun5OK3UBkvhTSMuIczEyytLOHA1QZcC/2wT+rA2K49dQGXfvyLDNiLy9eCBkg\nJtROqMhfdzV8tU9EXbj+DmVDfwAt9HxolDlMFGOAB4CjXMIT1DU3Ei7feJtpA34R\nfBPkorlQqJ2hYtchKedbcE6ZFJyrw2QIfQHiFfyTAoGBAN8oI1IgrRAiIhF57fDh\nyX8NU/USjWOoH7A7Tk80MjAafjdYYVW9wB37gqGWkppE4MvjJ6z/b17n972bsrte\nFtqh+5FyKdQp2Tv1DO2diU9EfgqxhA4CFXHTpa+vnhFWeYHAHaUi5A8ygsOvsNQJ\nHWOzZ9Aa02OBC+YVH1qDz++S\n-----END PRIVATE KEY-----\n",
-    "client_email": "nbtassigment@nbtassignment-1517088566054.iam.gserviceaccount.com",
-    "client_id": "102217606226429154939",
+    "project_id": "",
+    "private_key_id": "",
+    "private_key": "",
+    "client_email": "",
+    "client_id": "",
     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
     "token_uri": "https://accounts.google.com/o/oauth2/token",
     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/nbtassigment%40nbtassignment-1517088566054.iam.gserviceaccount.com"
+    "client_x509_cert_url": ""
 }
 
 GOOGLE_SCOPES = ['https://www.googleapis.com/auth/fusiontables']
