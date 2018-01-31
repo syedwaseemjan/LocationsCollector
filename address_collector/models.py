@@ -9,6 +9,9 @@ class Address(models.Model):
     created_on = models.DateTimeField('Created On', default=timezone.now)
     updated_on = models.DateTimeField('Updated On', default=timezone.now)
 
+    class Meta:
+        unique_together = ('latitude', 'longitude',)
+
     def __str__(self):
         return """Address:{}, Lat:{}, Lng:{},
         Created On:{}, Last Updated On:{}""".format(

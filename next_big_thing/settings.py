@@ -129,6 +129,8 @@ GOOGLE_FUSION_TABLE_ID = ''
 
 GOOGLE_FUSION_AUTHORIZATION_CODE = ''
 
+GOOGLE_CLIENT_ID = ''
+
 GOOGLE_SERVICE_ACCOUNT = {
     "type": "service_account",
     "project_id": "",
@@ -143,3 +145,28 @@ GOOGLE_SERVICE_ACCOUNT = {
 }
 
 GOOGLE_SCOPES = ['https://www.googleapis.com/auth/fusiontables']
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'address_collector': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}

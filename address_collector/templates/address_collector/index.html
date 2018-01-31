@@ -1,23 +1,14 @@
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'address_collector/style.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'address_collector/style.css' %}?124" />
 <script src="http://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_KEY }}&libraries=places"></script>
 <script src="{% static 'address_collector/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'address_collector/jquery.geocomplete.min.js' %}"></script>
-<script src="{% static 'address_collector/address_collector.js' %}"></script>
+<script src="{% static 'address_collector/address_collector.js' %}?1710"></script>
 
 
 <div class="main">
   	
 	<div id="my_map" class="map_canvas"></div>
-	{% if latest_address_list %}
-	    <ul>
-	    {% for address in latest_address_list %}
-	        <li><a href="/polls/{{ question.id }}/">{{ address.address }}</a></li>
-	    {% endfor %}
-	    </ul>
-	{% else %}
-	    <p>No polls are available.</p>
-	{% endif %}
-
-	<ul id="multiple"></ul>
+	<h2><a id="reset" href="#">Reset All</a></h2>
+	<div id="multiple"></div>
 </div>

@@ -9,13 +9,14 @@ $(function(){
     var controller = this;
     var $multiple = $("#multiple");
     controller.addresses = [];
-    var bounds = new google.maps.LatLngBounds();
+    controller.markers = [];
+    controller.bounds = new google.maps.LatLngBounds();
 
-    var updateList = function(){
+    var UpdateView = function(){
     	$multiple.empty();
     	$.each(controller.addresses, function(){
     		var address = this;
-    		$("<li>")
+    		$("<div>")
 			.html(address.address)
 			.appendTo($multiple);
     	});
@@ -27,17 +28,16 @@ $(function(){
             type: "GET",
             cache: false,
             contentType: "application/json; charset=utf-8",
-            dataType: "json",
             url: "/api/v1/addresses/",
             beforeSend: function(request){
             }
         }).always(function(){
             
         }).done(function(data){
-            console.log(data);
             controller.addresses = data;
-            updateList();
-            updateMarkers();
+            UpdateView();
+            updateMarkers(controller.map);
+            setMapOnAll(controller.map)
         });
 	};
 
@@ -47,63 +47,85 @@ $(function(){
             cache: false,
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
-            dataType: "json",
             url: "/api/v1/addresses/"
-        }).done(function(response){
-            console.log(response);
-            controller.addresses.push(response);
+        }).done(function(address){
+            controller.addresses.push(address);
         }).fail(function(response, error){
-            console.log(response.status);
             console.log(response.responseText);
         });
   	};
 
-  	var updateMarkers = function(){
-  		markers = []
+  	var deleteAddresses = function(){
+  		$.ajax({
+            type: "DELETE",
+            cache: false,
+            url: "/api/v1/addresses/"
+        }).done(function(response){
+            setMapOnAll(null);
+            controller.addresses = [];
+            UpdateView();
+        }).fail(function(response, error){
+            console.log(response.responseText);
+        });
+  	};
+
+    var getNewMarker = function(address, position, myMap) {
+        var pos = position;
+        if (!position){
+            pos = new google.maps.LatLng(address.latitude, address.longitude)
+        }
+        controller.bounds.extend(pos);
+        var marker = new google.maps.Marker({
+                position: pos,
+                map: myMap
+            });
+        return marker;
+    };
+
+  	var updateMarkers = function(myMap){
+  		
   		for (index in controller.addresses) {
   			address = controller.addresses[index]
-  			var pos = new google.maps.LatLng(address.latitude, address.longitude);
-  			bounds.extend(pos);
-  			var marker = new google.maps.Marker({
-				        position: pos,
-				        map: controller.map
-				    });
-  			controller.map.fitBounds(bounds);
+            controller.markers.push(getNewMarker(address, null, myMap));
 		}
   	};
+
+    var setMapOnAll = function(myMap) {
+        for (var i = 0; i < controller.markers.length; i++) {
+            controller.markers[i].setMap(myMap);
+            controller.map.fitBounds(controller.bounds);
+        }
+    };
 
 
   	var loadMap = function(){
   		var myLatlng = new google.maps.LatLng(30.3753, 69.3451);
 		var myOptions = {
+			zoom:1,
+			center:myLatlng
 		}
-
 	    var map = new google.maps.Map($("#my_map")[0], myOptions);
 	    var geocoder = new google.maps.Geocoder();
 	    controller.map = map;
 
 	    google.maps.event.addListener(map, 'click', function(event) {
-		    var latitude = event.latLng.lat();
-		    var longitude = event.latLng.lng();
-		    console.log(event);
+		    var latitude = event.latLng.lat(),
+		      longitude = event.latLng.lng(),
+		      position = event.latLng;
 
-		    var position = event.latLng
-
+		    //Validate that location has a real address and it’s not some wood/mountain/ocean
 		    geocoder.geocode({
 				'latLng': position
 			}, function(results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {
 					if (results[0]) {
-						console.log(results)
-						$("<li>")
+						$("<div>")
 						.html(results[0].formatted_address)
 						.appendTo($multiple);
 
-						var marker = new google.maps.Marker({
-					        position: position,
-					        map: map
-					    });
-					    map.panTo(position);
+                        var marker = getNewMarker(null, position, controller.map)
+					    controller.map.panTo(position);
+                        controller.markers.push(marker);
 
 					    saveAddress({
 					    	"address": results[0].formatted_address,
@@ -116,69 +138,13 @@ $(function(){
 		});
   	};
 
+  	$(document).on("click", "#reset", function(ev){
+        ev.preventDefault();
+    	deleteAddresses();
+	});
+
   	loadMap();
 	getAddresses();
-
-
-	
-	
-	
-    
-    /*
-	var $geocomplete = $('#geocomplete'),
-		$multiple = $("#multiple");
-
-
-	$geocomplete.geocomplete({
-		map: "#my_map",
-		location: "Pakistan",
-		details: "form",
-		mapOptions:{
-			scrollwheel: true,
-			zoomControl: false
-		},
-		markerOptions: {
-			draggable: false
-		}
-	}).bind("geocode:click", function(event, result){
-		//$geocomplete.geocomplete("find", result.lat()+","+result.lng());
-		console.log(result);
-		console.log(event);
-		$geocomplete.geocomplete("find", result.lat()+","+result.lng());
-
-	}).bind("geocode:result", function(event, result){
-		//saveToDB(result);
-		console.log(result)
-
-
-		
-
-    	console.log(result.geometry.location.lat(), result.geometry.location.lng());
-    	var marker = new google.maps.Marker({
-	        position: new google.maps.LatLng(result.geometry.location.lat(), result.geometry.location.lng()),
-	        map: $geocomplete.geocomplete("map")
-	    });
-
-	    console.log(marker);
-	    $("<li>")
-		.html(result.formatted_address)
-		.appendTo($multiple);
-
-  	}).bind("geocode:error", function(event, result){
-    	console.log(result);
-  	}).bind("geocode:multiple", function(event, results){
-        $.each(results, function(){
-			var result = this;
-			$("<li>")
-			.html(result.formatted_address)
-			.appendTo($multiple)
-			.click(function(){
-				$geocomplete.geocomplete("update", result)
-			});
-        });
-    });
-	
-	*/
 	
   	
 });

@@ -1,6 +1,8 @@
+import copy
+import logging
+
 from django.conf import settings
 from django.shortcuts import render
-from django.urls import reverse
 
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -8,22 +10,21 @@ from rest_framework.response import Response
 
 from address_collector.models import Address
 from address_collector.serializers import AddressSerializer
+from address_collector.utils import perform_query
 
-import copy
-import requests
+
+logger = logging.getLogger(__name__)
 
 
 def index(request):
-    latest_address_list = Address.objects.order_by('-created_on')[:5]
-    context = {'latest_address_list': latest_address_list,
-               'GOOGLE_MAPS_KEY': settings.GOOGLE_MAPS_KEY}
+    context = {'GOOGLE_MAPS_KEY': settings.GOOGLE_MAPS_KEY}
     return render(request, 'address_collector/index.html', context)
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'DELETE'])
 def addresses(request):
     """
-    List all addresses or create a new address
+    List all addresses, create a new address or delete all addresses.
     """
     if request.method == 'GET':
         records = Address.objects.all()
@@ -31,35 +32,28 @@ def addresses(request):
         return Response(serializers.data)
 
     elif request.method == 'POST':
-
         serializer = AddressSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-
-            from google.oauth2 import service_account
-            import googleapiclient.discovery
-
-            credentials = service_account.Credentials.from_service_account_info(
-                settings.GOOGLE_SERVICE_ACCOUNT, scopes=settings.GOOGLE_SCOPES)
-
-            ft_service = googleapiclient.discovery.build(
-                'fusiontables', 'v2', credentials=credentials)
-            query = ft_service.query()
-
             row = copy.copy(serializer.data)
             row["tableid"] = settings.GOOGLE_FUSION_TABLE_ID
-            sql_string = "INSERT INTO {0} (ID, Address, Latitude, Longitude, CreatedOn, UpdatedOn) VALUES({1}, '{2}', {3}, {4}, '{5}', '{6}')".format(
-                row["tableid"], row["id"], row["address"], row["longitude"], row["latitude"], row["created_on"], row["updated_on"])
-            print(sql_string)
-            request = query.sql(sql=sql_string)
-            try:
-                response = request.execute()
-            except Exception as e:
-                Response(status=response.status_code)
+            sql_string = "INSERT INTO {0} (DatabaseID, Address, Latitude, Longitude, CreatedOn, UpdatedOn) VALUES({1}, '{2}', {3}, {4}, '{5}', '{6}')".format(
+                row["tableid"], row["id"], row["address"], row["longitude"], row["latitude"],
+                row["created_on"], row["updated_on"])
+
+            perform_query(sql_string)
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(
-                serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    elif request.method == 'DELETE':
+        ids = Address.objects.all().values_list('id', flat=True)
+        ids_str = '(%s)' % ', '.join(map(repr, ids))
+        sql_string = "DELETE FROM {0} WHERE DatabaseID in {1}".format(
+            settings.GOOGLE_FUSION_TABLE_ID, ids_str)
+        rows = perform_query(sql_string)["rows"]
+        logger.info("Total Addresses: {0}. Deleted From FusionTable: {1}".format(len(list(ids)), rows[0]))
+        Address.objects.all().delete()
+        return Response([], status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_404_NOT_FOUND)
